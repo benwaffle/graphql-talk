@@ -1,0 +1,91 @@
+import { Split } from 'mdx-deck/layouts'
+import GraphiQL from 'graphiql'
+export { default as theme } from './theme'
+import Box from 'superbox'
+
+# GraphQL
+#### Ben Iofel
+#### flow.io
+
+---
+
+```notes
+What is GraphQL?
+
+query lang & implementation
+ask for only what you need
+cool dev tools
+```
+
+- A query language for your API
+- Replaces REST
+
+---
+
+```js
+fetch('https://swapi.co/api/films')
+fetch('https://swapi.co/api/people/1')
+fetch('https://swapi.co/api/people/3')
+fetch('https://swapi.co/api/people/7')
+fetch('https://swapi.co/api/people/8')
+...
+```
+
+---
+
+<Box fontSize={25}>
+
+```graphql
+{
+  allFilms {
+    films {
+      title
+      characterConnection {
+        characters {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+</Box>
+
+<a href="https://graphql.github.io/swapi-graphql/?query=%7B%0A%20%20allFilms%20%7B%0A%20%20%20%20films%20%7B%0A%20%20%20%20%20%20title%0A%20%20%20%20%20%20characterConnection%20%7B%0A%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A" target="_blank">run</a>
+
+---
+
+# Type System
+
+---
+
+```notes
+Everything has a type.
+Everything is introspectable
+```
+
+```graphql
+type Query {
+  hero(episode: Episode): Character
+  droid(id: ID!): Droid
+}
+
+type Starship {
+  id: ID!
+  name: String!
+  length(unit: LengthUnit = METER): Float
+}
+
+...
+
+union SearchResult = Human | Droid | Starship
+```
+
+---
+
+```notes
+hit ctrl+space
+```
+
+<a href="https://graphql.github.io/swapi-graphql/" target="_blank">dev tools</a>

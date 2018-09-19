@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "mdx-deck deck.mdx"
+  },
+  "dependencies": {
+    "graphiql": "^0.12.0",
+    "graphql": "^14.0.2",
+    "mdx-deck": "^1.7.4"
+  }
+}
