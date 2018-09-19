@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "mdx-deck deck.mdx",
-    "build": "mdx-deck build deck.mdx",
+    "build": "mdx-deck build deck.mdx && cp *.png dist/",
     "now-start": "serve dist/"
   },
   "dependencies": {

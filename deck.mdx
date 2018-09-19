@@ -148,8 +148,9 @@ console.log('Running a GraphQL API server at localhost:4000/graphql');
 ---
 
 ```notes
-Incrementally add your own implementation.
-Make one request over internet and many requests in the same data center
+- a graphql server that is backed by REST calls
+1. Incrementally add your own implementation.
+2. Make one request over internet and many requests in the same data center
 ```
 
 <h1><a href="https://github.com/apicollective/graphql-rest-proxy" target="_blank">graphql-rest-proxy</a></h1>
@@ -159,24 +160,117 @@ Easily wrap your REST API in GraphQL
 ---
 
 ```notes
+all you need is a json config
 you define your models, enums, unions
+```
+
+```json
+"models": {
+  "organization": {
+    "fields": [
+      { "name": "id", "type": "string" },
+      { "name": "name", "type": "string" },
+      { "name": "environment", "type": "environment" }
+    ]
+  }
+}
+```
+
+---
+
+```notes
 you define resources as shown
+each resource becomes a top-level query
 ```
 
 export default FullScreenCode
 
 ```json
-"organization": {
-  "many": {
-    "path": "/organizations",
-    "params": {
-      "id": { "type": "[string]", "required": false, "maximum": 100 },
-      "name": { "type": "string", "required": false },
-      "environment": { "type": "environment", "required": false },
-      "limit": { "type": "long", "default": 25, "minimum": 1, "maximum": 100 },
-      "offset": { "type": "long", "default": 0, "minimum": 0 },
-      "sort": { "type": "string", "default": "name" }
+"resources": {
+  "organization": {
+    "many": {
+      "path": "/organizations",
+      "params": {
+        "id": { "type": "[string]", "required": false, "maximum": 100 },
+        "name": { "type": "string", "required": false },
+        "environment": { "type": "environment", "required": false },
+        "limit": { "type": "long", "default": 25, "minimum": 1, "maximum": 100 },
+        "offset": { "type": "long", "default": 0, "minimum": 0 },
+        "sort": { "type": "string", "default": "name" }
+      }
     }
   }
-},
+}
 ```
+
+---
+
+![](query.png)
+
+---
+
+export default FullScreenCode
+
+```notes
+the value of graphql comes when you link objects together
+```
+
+```json
+"models": {
+  "organization": {
+    "links": [
+      {
+        "name": "parent",
+        "type": "organization",
+        "params": [
+          {
+            "name": "id",
+            "location": "instance",
+            "expression": "$.parent.id"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
+```notes
+for each org we can find its parent
+
+each time you want the parent, that's another HTTP request
+```
+
+![](type.png)
+
+---
+
+```notes
+one last plug
+we use apibuilder at flow
+allows you to model your api, like swagger
+```
+
+<h1><a href="https://apibuilder.io" target="_blank">APIBuilder</a></h1>
+
+- generates servers, clients, mocks, prop-types
+- Scala, JS, Ruby, Go, ...
+- generate a config.json for graphql-rest-proxy 
+
+---
+
+# Any Questions?
+# Thank you
+
+---
+
+# Resources
+
+- Slides: [graphql-flow.now.sh](https://graphql-flow.now.sh)
+- [GraphQL](https://graphql.org)
+- [Apollo](https://apollographql.com)
+- [graphql-rest-proxy](https://github.com/apicollective/graphql-rest-proxy)
+- [apibuilder-js-generators](https://github.com/apicollective/apibuilder-js-generator/tree/master/src/generators/node_graphql)
+- [APIBuilder](https://apibuilder.io)
